@@ -1,18 +1,11 @@
 <template>
     <div class="header">
         <p class="title"><span>IT</span>SHELL</p>
-        <p class="signIn" @click="toModal">Вход</p>
-        <login-modal v-model="open"></login-modal>
+        <p class="signIn">Выход</p>
     </div>
 </template>
 
 <script setup>
-import LoginModal from "@/components/modal/LoginModal.vue";
-import {ref} from "vue";
-const open = ref(false)
-const toModal = () => {
-    open.value = !open.value
-}
 </script>
 
 <style lang="scss" scoped>
@@ -25,13 +18,15 @@ const toModal = () => {
         justify-content: space-between;
         flex-wrap: wrap;
         row-gap: 20px;
+        border-bottom: solid 1px black;
+        background: #FFFFFF;
         .title{
             font-style: normal;
             font-weight: 700;
             font-size: 36px;
             line-height: 42px;
             margin: 0;
-            color: #ffffff;
+            color: black;
             span{
                 color: #0083E2;
             }
@@ -42,8 +37,7 @@ const toModal = () => {
             font-weight: 700;
             font-size: 24px;
             line-height: 28px;
-            color: #FFFFFF;
-            cursor: pointer;
+            color: black;
         }
     }
 </style>

@@ -3,12 +3,6 @@
         <div class="list">
             <video-card-component></video-card-component>
             <video-card-component></video-card-component>
-            <video-card-component></video-card-component>
-            <video-card-component></video-card-component>
-            <video-card-component></video-card-component>
-            <video-card-component></video-card-component>
-            <video-card-component></video-card-component>
-            <video-card-component></video-card-component>
         </div>
     </v-container>
 </template>

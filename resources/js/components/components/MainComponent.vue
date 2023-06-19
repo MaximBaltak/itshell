@@ -2,11 +2,13 @@
     <div class="main">
         <div class="filter">
         <header-component></header-component>
-        <v-container>
-            <div class="wrapper">
-                <h1 class="title"><span>Web</span>Dev: Изучение веб-разработки с помощью видеоуроков.</h1>
-                <button class="button">К видео</button>
-            </div>   
+        <v-container style="margin-top: 80px">
+            <div style="width: 50%; margin: 0 auto" >
+                <div class="wrapper">
+                    <h1 class="title"><span>Web</span>Dev: Изучение веб-разработки с помощью видеоуроков.</h1>
+                    <button class="button">К видео</button>
+                </div>
+            </div>
         </v-container>
         </div>
     </div>
@@ -19,12 +21,12 @@ import HeaderComponent from './HeaderComponent.vue';
 <style lang="scss" scoped>
     .main{
     width: 100%;
-    height: 600px;
+    height: 800px;
     background-image: url('../../../assets/img/bacground_main.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    }   
+    }
     .filter{
         width: 100%;
         height: 100%;
