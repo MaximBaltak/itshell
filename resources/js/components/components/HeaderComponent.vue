@@ -1,17 +1,34 @@
 <template>
     <div class="header">
         <p class="title"><span>IT</span>SHELL</p>
-        <p class="signIn" @click="toModal">Вход</p>
-        <login-modal v-model="open"></login-modal>
+        <p v-if="!userStore?.user?.id" class="signIn" @click="toModal">Вход</p>
+        <div v-else>
+            <p class="text">{{userStore.user.name}}</p>
+            <p v-if="userStore?.user?.is_admin"  class="signIn" @click="toAdmin()">В панель управления</p>
+            <p class="signIn" @click="logout()">Выход</p >
+        </div>
+        <login-modal v-model="modalStore.isOpen"></login-modal>
     </div>
 </template>
 
 <script setup>
 import LoginModal from "@/components/modal/LoginModal.vue";
-import {ref} from "vue";
-const open = ref(false)
+import {useModalState} from "@/store/modal.js";
+import {useUserState} from "@/store/user.js";
+import {useRouter} from "vue-router";
+const modalStore = useModalState();
+const router = useRouter()
+const userStore = useUserState()
 const toModal = () => {
-    open.value = !open.value
+    modalStore.isOpen = !modalStore.isOpen
+}
+const logout = async () => {
+    await userStore.logoutUser()
+}
+const toAdmin =  () => {
+    router.push({
+        name:'admin'
+    })
 }
 </script>
 
@@ -43,6 +60,14 @@ const toModal = () => {
             font-size: 24px;
             line-height: 28px;
             color: #FFFFFF;
+            cursor: pointer;
+        }
+        .text{
+            color: white;
+            font-size: 24px;
+            font-weight: 400;
+            margin: 0;
+            line-height: 28px;
             cursor: pointer;
         }
     }

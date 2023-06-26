@@ -2,9 +2,24 @@
     <div class="dialog" style="width: 100%;height: 100%">
         <h2 class="title_dialog">Вход для администратора</h2>
         <div class="flex">
-            <input class="input" type="email" placeholder="Email">
-            <input class="input" type="text" placeholder="Пароль">
-            <button class="button">Войти</button>
+            <div style="width: 100%;">
+                <input v-model="email" class="input" type="email" placeholder="Email">
+                <div class='error'>
+                    <role text="Обязательно" :isRole="state.isRequiredEmail"></role>
+                    <role text="Email" :isRole="state.isEmail"></role>
+                </div>
+            </div>
+            <div style="width: 100%;">
+                <input v-model="password" class="input" type="text" placeholder="Пароль">
+                <div class='error'>
+                    <role text="Обязательно" :isRole="state.isRequiredPassword"></role>
+                    <role text="Верхний и нижний регистр"
+                          :isRole="state.isLowerCasePassword && state.isUpperCasePassword"></role>
+                    <role text="Есть цифры" :isRole="state.isNumber"></role>
+                    <role text="Минимум 8 символов" :isRole="state.isLengthPassword"></role>
+                </div>
+            </div>
+            <button @click="submit()" :disabled="!state.isValid" class="button">Войти</button>
             <p class="link" @click="modalStore.setIsLoginForm(false)">Зарегистрироваться</p>
         </div>
     </div>
@@ -12,11 +27,70 @@
 
 <script setup>
     import {useModalState} from "@/store/modal.js";
-
+    import Role from "@/components/components/Role.vue";
+    import {computed, reactive, watchEffect} from "vue";
+    import {useUserState} from "@/store/user.js";
     const modalStore = useModalState()
+    const userStore = useUserState()
+    const state = reactive({
+        isRequiredPassword: false,
+        isLengthPassword: false,
+        isUpperCasePassword: false,
+        isLowerCasePassword: false,
+        isNumber: false,
+        isRequiredEmail: false,
+        isEmail: false,
+        password: '',
+        email: '',
+        isValid: false
+    })
+    const password = computed({
+        get: () => state.password,
+        set: value => {
+            state.isRequiredPassword = value.length > 0
+            state.isLengthPassword = value.length >= 8
+            state.isNumber = /\d/.test(value)
+            state.isUpperCasePassword = /[A-Z]/.test(value)
+            state.isLowerCasePassword = /[a-z]/.test(value)
+            state.password = value
+        }
+    })
+    const email = computed({
+        get: () => state.email,
+        set: value => {
+            state.isRequiredEmail = value.length > 0
+            state.isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+            state.email = value
+        }
+    })
+    watchEffect(() => {
+        state.isValid = state.isRequiredPassword &&
+            state.isLengthPassword &&
+            state.isNumber &&
+            state.isUpperCasePassword &&
+            state.isLowerCasePassword &&
+            state.isRequiredEmail &&
+            state.isEmail
+    })
+    const submit = async () => {
+        const payload = {
+            email: state.email,
+            password: state.password
+        }
+        await userStore.loginUser(payload)
+        modalStore.isOpen = false
+    }
 </script>
 
 <style lang="scss" scoped>
+.error {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 5px;
+    gap: 5px;
+}
 .title_dialog{
     font-style: normal;
     font-weight: 700;
@@ -62,6 +136,10 @@
     line-height: 23px;
     color: #FFFFFF;
     cursor: pointer;
+    &:disabled{
+        cursor: default;
+        opacity: 0.5;
+    }
 }
 .link{
     margin: 0;

@@ -1,11 +1,25 @@
 <template>
     <div class="header">
         <p class="title"><span>IT</span>SHELL</p>
-        <p class="signIn">Выход</p>
+        <div>
+            <p class="text">{{userStore.user.name}}</p>
+            <p class="signIn" @click="logout()">Выход</p >
+        </div>
     </div>
 </template>
 
 <script setup>
+import {useUserState} from "@/store/user.js";
+import {useRouter} from "vue-router";
+const router = useRouter()
+const userStore = useUserState()
+
+const logout = async () => {
+    await userStore.logoutUser()
+    await router.push({
+        name:'home'
+    })
+}
 </script>
 
 <style lang="scss" scoped>

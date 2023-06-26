@@ -4,6 +4,9 @@
     </v-app>
 </template>
 <script setup>
+    import {useUserState} from "@/store/user.js";
+    const userStore = useUserState()
+    userStore.getUser()
 </script>
 <style lang="scss">
     .app{
@@ -11,6 +14,5 @@
         padding: 0;
         height: 100%;
         font-family: 'Roboto';
-        
     }
 </style>

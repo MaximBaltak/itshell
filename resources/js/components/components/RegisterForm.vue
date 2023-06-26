@@ -3,24 +3,114 @@
         <h2 class="title_dialog">Зарегистрироваться</h2>
         <p>Чтобы стать администратором, зарегистрируйтесь и свяжитесь с владельцем сайта</p>
         <div class="flex">
-            <input class="input" type="text" placeholder="Имя">
-            <input class="input" type="email" placeholder="Email">
-            <input class="input" type="text" placeholder="Пароль">
-            <button class="button">Зарегистрироваться</button>
+            <div style="width: 100%;">
+                <input v-model="name" class="input" type="text" placeholder="Имя">
+                <div class='error'>
+                    <role text="Обязательно" :isRole="state.isRequiredName"></role>
+                </div>
+            </div>
+            <div style="width: 100%;">
+                <input v-model="email" class="input" type="email" placeholder="Email">
+                <div class='error'>
+                    <role text="Обязательно" :isRole="state.isRequiredEmail"></role>
+                    <role text="Email" :isRole="state.isEmail"></role>
+                </div>
+            </div>
+            <div style="width: 100%;">
+                <input v-model="password" class="input" type="text" placeholder="Пароль">
+                <div class='error'>
+                    <role text="Обязательно" :isRole="state.isRequiredPassword"></role>
+                    <role text="Верхний и нижний регистр"
+                          :isRole="state.isLowerCasePassword && state.isUpperCasePassword"></role>
+                    <role text="Есть цифры" :isRole="state.isNumber"></role>
+                    <role text="Минимум 8 символов" :isRole="state.isLengthPassword"></role>
+                </div>
+            </div>
+            <button @click="submit()" :disabled="!state.isValid" class="button">Зарегистрироваться</button>
             <p class="link" @click="modalStore.setIsLoginForm(true)">Войти</p>
         </div>
     </div>
 </template>
 
 <script setup>
-    import {useModalState} from "@/store/modal.js";
-
-    const modalStore = useModalState();
-
+import {useModalState} from "@/store/modal.js";
+import {computed, reactive, watch, watchEffect} from "vue";
+import Role from "@/components/components/Role.vue";
+import {useUserState} from "@/store/user.js";
+const modalStore = useModalState();
+const userStore = useUserState();
+const state = reactive({
+    isRequiredName: false,
+    isRequiredPassword: false,
+    isLengthPassword: false,
+    isUpperCasePassword: false,
+    isLowerCasePassword: false,
+    isNumber: false,
+    isRequiredEmail: false,
+    isEmail: false,
+    name: '',
+    password: '',
+    email: '',
+    isValid: false
+})
+const name = computed({
+    get: () => state.name,
+    set: value => {
+        state.isRequiredName = value.length > 0
+        state.name = value
+    }
+})
+const password = computed({
+    get: () => state.password,
+    set: value => {
+        state.isRequiredPassword = value.length > 0
+        state.isLengthPassword = value.length >= 8
+        state.isNumber = /\d/.test(value)
+        state.isUpperCasePassword = /[A-Z]/.test(value)
+        state.isLowerCasePassword = /[a-z]/.test(value)
+        state.password = value
+    }
+})
+const email = computed({
+    get: () => state.email,
+    set: value => {
+        state.isRequiredEmail = value.length > 0
+        state.isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+        state.email = value
+    }
+})
+watchEffect(() => {
+    state.isValid = state.isRequiredName &&
+        state.isRequiredPassword &&
+        state.isLengthPassword &&
+        state.isNumber &&
+        state.isUpperCasePassword &&
+        state.isLowerCasePassword &&
+        state.isRequiredEmail &&
+        state.isEmail
+})
+const submit = async () => {
+        const payload = {
+            name: state.name,
+            email: state.email,
+            password: state.password
+        }
+        await userStore.registerUser(payload)
+        modalStore.isOpen = false
+}
 </script>
 
 <style lang="scss" scoped>
-.title_dialog{
+.error {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 5px;
+    gap: 5px;
+}
+
+.title_dialog {
     font-style: normal;
     font-weight: 700;
     font-size: 20px;
@@ -28,7 +118,8 @@
     color: #000000;
     text-align: center;
 }
-.flex{
+
+.flex {
     display: flex;
     width: 350px;
     flex-flow: column;
@@ -38,7 +129,8 @@
     margin: 52px auto;
 
 }
-.input{
+
+.input {
     outline: none;
     padding: 5px;
     width: 100%;
@@ -48,7 +140,8 @@
     background: #FFFFFF;
     border: 1px solid #000000;
 }
-.button{
+
+.button {
     display: block;
     outline: none;
     margin: 0 auto 0;
@@ -65,8 +158,13 @@
     line-height: 23px;
     color: #FFFFFF;
     cursor: pointer;
+    &:disabled{
+        cursor: default;
+        opacity: 0.5;
+    }
 }
-.link{
+
+.link {
     margin: 0;
     font-weight: 500;
     color: #0083E2;
