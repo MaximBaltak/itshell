@@ -10,6 +10,14 @@ import axios from 'axios';
 window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.interceptors.request.use(
+    function(config) {
+        const jsonToken = localStorage.getItem('auth')
+        const token = jsonToken ? JSON.parse(jsonToken) : ''
+        config.headers['Authorization'] = `Bearer ${token}`;
+        return config;
+    },
+);
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

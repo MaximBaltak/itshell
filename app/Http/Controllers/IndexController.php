@@ -15,18 +15,9 @@ use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class IndexController extends Controller
 {
-    public function getUser()
-    {
-        $user = Auth::user();
-        return new JsonResponse(new UserResources($user));
-    }
 
     public function register (Request $request) {
-        if(Auth::check()) {
-            return new JsonResponse([
-                'message' => 'Пользователь уже существует'
-            ], ResponseAlias::HTTP_CONFLICT);
-        }
+
         try {
             $validated = Validator::make($request->all(),[
                 'name' => ['string','required'],
@@ -37,7 +28,15 @@ class IndexController extends Controller
             if($validated->fails()) {
                 throw new ValidationException($validated);
             }
+
             $data = $validated->getData();
+            $user = User::query()->where('email',$data['email'])->first();
+            if($user) {
+                return new JsonResponse([
+                    'message'=> 'Пользователь уже существует'
+                ],ResponseAlias::HTTP_CONFLICT);
+            }
+
             $user = new User([
                 'name' => $data['name'],
                 'email' => $data['email'],
@@ -45,17 +44,23 @@ class IndexController extends Controller
                 'is_admin' => false
             ]);
             $user->save();
-            Auth::login($user);
-            return new JsonResponse(new UserResources($user));
+            $accessToken = $user->createToken('auth')->plainTextToken;
+            return new JsonResponse([
+                'access_token' => $accessToken,
+                'user' => new UserResources($user)
+            ]);
+
         } catch (\Illuminate\Validation\ValidationException $exception) {
             return new JsonResponse([
                'message' => $exception->validator->errors()
             ],422);
         }
     }
+
     public function login (Request $request) {
 
         try {
+
             $validated = Validator::make($request->all(),[
                 'email' => ['string','required','email'],
                 'password' => ['required', 'string', 'min:8','regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/']
@@ -64,16 +69,19 @@ class IndexController extends Controller
             if($validated->fails()) {
                 throw new ValidationException($validated);
             }
-            $data  = $validated->getData();
-            if(Auth::attempt([
-                'email' => $data['email'],
-                'password'=>$data['password']
-            ])){
-                return new JsonResponse(new UserResources(Auth::user()));
+            $data = $validated->getData();
+            $user = User::query()->where('email',$data['email'])->first();
+
+            if($user && Hash::check($data['password'],$user->password)){
+                $accessToken = $user->createToken('auth')->plainTextToken;
+                return new JsonResponse([
+                    'access_token'=> $accessToken,
+                    'user'=> new UserResources($user)
+                ]);
             } else {
                 return new JsonResponse([
                     'message' => 'Такого пользователя не существует'
-                ],409);
+                ],ResponseAlias::HTTP_CONFLICT);
             }
         } catch (\Illuminate\Validation\ValidationException $exception) {
             return new JsonResponse([
@@ -81,9 +89,10 @@ class IndexController extends Controller
             ],422);
         }
     }
-    public function logout()
+    public function logout(Request $request)
     {
-        Auth::logout();
-        return response()->json([],200)->status();
+        $user = $request->user();
+        $user->tokens()->delete();
+        return response()->json(null,ResponseAlias::HTTP_OK);
     }
 }

@@ -1,8 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexController;
+use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
+use \App\Http\Controllers\UploadVideoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +16,10 @@ use App\Http\Controllers\IndexController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::post('register',[IndexController::class,'register']);
-Route::post('login',[IndexController::class,'login']);
-Route::post('logout',[IndexController::class,'logout']);
-Route::get('user',[IndexController::class,'getUser']);
+Route::post('register', [IndexController::class, 'register']);
+Route::post('login', [IndexController::class, 'login']);
+Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->group(function () {
+    Route::get('logout', [IndexController::class, 'logout']);
+    Route::get('user', [UsersController::class, 'getUser']);
+    Route::post('video',[UploadVideoController::class,'save']);
+});

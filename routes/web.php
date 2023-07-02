@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
+use \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/admin', [HomeController::class, 'index'])->name('home');
+
+Route::middleware([EnsureFrontendRequestsAreStateful::class])->group(function () {
+   Route::middleware('auth:sanctum')->get('/admin',[HomeController::class,'index'])->name('home.admin');
+});

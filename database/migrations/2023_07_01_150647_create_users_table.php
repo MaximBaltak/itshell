@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->comment('Имя пользователя');
-            $table->string('email')->unique()->comment('Почта пользователя');
-            $table->string('password')->comment('Пароль пользователя');
-            $table->boolean('is_admin')->default(false)->comment('Является ли он администратором');
+            $table->string('name')->comment('имя пользователя');
+            $table->string('email')->unique()->comment('почта пользователя');
+            $table->string('password')->comment('Пароль');
+            $table->boolean('is_admin')->default(false)->comment("является ли он админом");
+            $table->boolean('is_email_confirm')->default(false)->comment('Подверждённый ли email');
             $table->timestamps();
         });
     }

@@ -1,6 +1,7 @@
 <template>
     <div class="dialog" style="width: 100%;height: 100%">
         <h2 class="title_dialog">Вход для администратора</h2>
+        <p class="error_text" v-if="userStore.loginError">{{userStore.loginError}}</p>
         <div class="flex">
             <div style="width: 100%;">
                 <input v-model="email" class="input" type="email" placeholder="Email">
@@ -78,7 +79,7 @@
             password: state.password
         }
         await userStore.loginUser(payload)
-        modalStore.isOpen = false
+        modalStore.isOpen = !!userStore.loginError
     }
 </script>
 
@@ -147,5 +148,11 @@
     color: #0083E2;
     font-size: 18px;
     cursor: pointer;
+}
+.error_text{
+  font-size: 18px;
+  color: red;
+  font-weight: 500;
+  text-align: center;
 }
 </style>

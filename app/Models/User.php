@@ -4,31 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
 
-class User extends Model implements \Illuminate\Contracts\Auth\Authenticatable
+class User extends Model
 {
     use HasFactory;
+    use HasApiTokens;
     protected $table = 'users';
-    protected $fillable = ['name','email','password','is_admin'];
-    public function getAuthIdentifierName()
-    {
-        return 'id';
+    protected $primaryKey = 'id';
+    protected $fillable = [
+      'name',
+      'password',
+      'email',
+      'is_admin',
+      'is_email_confirm'
+    ];
+    public function videos(){
+        return $this->hasMany(Video::class)->cascadeDeletes();
     }
-
-    public function getAuthIdentifier()
-    {
-        return $this->id;
-    }
-
-    public function getAuthPassword()
-    {
-        return $this->password;
-    }
-
-    //remaining abstract methods
-    public function getRememberToken(){}
-
-    public function setRememberToken($value){}
-
-    public function getRememberTokenName(){}
 }

@@ -2,6 +2,7 @@
     <div class="dialog" style="max-width: 100%;height: 100%">
         <h2 class="title_dialog">Зарегистрироваться</h2>
         <p>Чтобы стать администратором, зарегистрируйтесь и свяжитесь с владельцем сайта</p>
+      <p class="error_text" v-if="userStore.registerError">{{userStore.registerError}}</p>
         <div class="flex">
             <div style="width: 100%;">
                 <input v-model="name" class="input" type="text" placeholder="Имя">
@@ -96,7 +97,7 @@ const submit = async () => {
             password: state.password
         }
         await userStore.registerUser(payload)
-        modalStore.isOpen = false
+        modalStore.isOpen = !!userStore.registerError
 }
 </script>
 
@@ -170,5 +171,11 @@ const submit = async () => {
     color: #0083E2;
     font-size: 18px;
     cursor: pointer;
+}
+.error_text{
+  font-size: 18px;
+  color: red;
+  font-weight: 500;
+  text-align: center;
 }
 </style>
