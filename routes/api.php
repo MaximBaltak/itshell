@@ -18,8 +18,12 @@ use \App\Http\Controllers\UploadVideoController;
 */
 Route::post('register', [IndexController::class, 'register']);
 Route::post('login', [IndexController::class, 'login']);
+Route::get('video/all',[UploadVideoController::class,'getVideosAll']);
 Route::middleware([EnsureFrontendRequestsAreStateful::class, 'auth:sanctum'])->group(function () {
     Route::get('logout', [IndexController::class, 'logout']);
     Route::get('user', [UsersController::class, 'getUser']);
     Route::post('video',[UploadVideoController::class,'save']);
+    Route::get('video',[UploadVideoController::class,'getVideos']);
+    Route::get('video/{id}',[UploadVideoController::class,'getVideo']);
+    Route::delete('video/{id}',[UploadVideoController::class,'removeVideo']);
 });

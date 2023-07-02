@@ -27,7 +27,6 @@ export const useUserState = defineStore('user',{
         async getUser () {
             try {
                 const { data } = await axios.get('api/user')
-                console.log(data)
                 this.user = {...data.data}
             } catch (e) {
             }

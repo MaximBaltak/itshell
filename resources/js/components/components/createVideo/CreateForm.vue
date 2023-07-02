@@ -1,6 +1,6 @@
 <template>
   <div class="grid">
-    <div class="form">
+    <div class="form" v-if="createVideoStore.statusVideo === 'create'">
       <div class="form_create">
         <v-text-field v-model="createVideoStore.title" label="Название" variant="outlined"></v-text-field>
         <v-file-input @click:clear="createVideoStore.removeImage" @change="add" label="Обложка" variant="outlined" accept="image/png, image/jpeg"></v-file-input>
@@ -20,11 +20,16 @@
           style="left: 0;transform: none"
           :style="{color: createVideoStore.progress >= 100 ? 'green':'#0083E2'}"
           :model-value="createVideoStore.progress"></v-progress-linear>
-      <p v-if="createVideoStore.progress < 100" style="color: #0083E2; margin-top: 20px">В обработке</p>
-      <p v-if="createVideoStore.progress >= 100" style="color: green; margin-top: 20px">Ждёт публикации</p>
+      <p v-if="createVideoStore.statusVideo === 'pending'"
+         style="color: #0083E2;
+          margin-top: 20px">
+          {{`Загрузка: ${createVideoStore.progress}%`}}
+      </p>
+      <p v-if="createVideoStore.statusVideo === 'success'" style="color: green; margin-top: 20px">Опубликовано</p>
       <button
+          v-if="createVideoStore.statusVideo === 'create'"
           :disabled="!createVideoStore.title || !createVideoStore.imageBase64"
-          @click="createVideoStore.publishVideo"
+          @click="publish"
           class="publish">Опубликовать
       </button>
     </div>
@@ -33,11 +38,21 @@
 
 <script setup>
 import {useCreateVideoState} from "@/store/createVideo.js";
+import {usePageState} from "@/store/page.js";
+import {watch} from "vue";
+import {useVideosState} from "@/store/videos.js";
 
 const createVideoStore = useCreateVideoState()
+const videosStore = useVideosState()
+const pageStore = usePageState()
 const remove = () => {
   createVideoStore.removeVideo()
 }
+watch(() => pageStore.tab, (value) => {
+    if (value !== 'createVideo' && createVideoStore.statusVideo === 'success') {
+        createVideoStore.removeVideo()
+    }
+})
 const add = async (e) => {
   const file = e.target.files[0]
   if(file && (file.type === 'image/jpeg' || file.type === 'image/png')) {
@@ -49,6 +64,10 @@ const add = async (e) => {
 
     reader.readAsDataURL(file);
   }
+}
+const publish = async () => {
+    await createVideoStore.publishVideo()
+    await videosStore.getAllVideos()
 }
 </script>
 

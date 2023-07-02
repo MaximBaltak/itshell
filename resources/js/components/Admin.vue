@@ -7,15 +7,19 @@
         На главную
       </p>
     </div>
-    <v-tabs color="black" v-model="state.tab" bg-color="blue">
+    <v-tabs color="black" v-model="pageStore.tab" bg-color="blue">
       <v-tab value="createVideo">Добавить видео</v-tab>
       <v-tab value="listVideo">Список видео</v-tab>
     </v-tabs>
-    <v-window v-model="state.tab">
+    <v-window v-model="pageStore.tab">
       <v-window-item value="createVideo">
         <CreateVideo/>
       </v-window-item>
-      <v-window-item value="listVideo">Список</v-window-item>
+      <v-window-item value="listVideo">
+          <Suspense>
+              <ListAllVideo/>
+          </Suspense>
+      </v-window-item>
     </v-window>
   </div>
 </template>
@@ -23,11 +27,10 @@
 <script setup>
 import HeaderAdminComponent from "@/components/components/HeaderAdminComponent.vue";
 import {useRouter} from "vue-router";
-import {reactive} from "vue";
 import CreateVideo from "@/components/components/createVideo/CreateVideo.vue";
-const state = reactive({
-  tab: 'createVideo'
-})
+import ListAllVideo from "@/components/components/listAllVideo/ListAllVideo.vue";
+import {usePageState} from "@/store/page.js";
+const pageStore = usePageState()
 const router = useRouter()
 const toBack = () => {
   router.push({
@@ -39,7 +42,7 @@ const toBack = () => {
 <style lang="scss" scoped>
 .header_main{
   width: 100%;
-  background: #2196f3;;
+  background: #2196f3;
 }
 .button {
   font-style: normal;

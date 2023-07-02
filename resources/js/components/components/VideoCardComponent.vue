@@ -1,18 +1,33 @@
 <template>
-  <div class="card">
-    <img src="../../../assets/img/bacground_main.png" alt="video">
-    <p class="title">#17. Заканчиваем/обработка
-      ошибок1236547896541236974123698741236987412365478965412369874566321456987...</p>
+  <div @click="open" class="card">
+    <img :src="video.img" alt="video">
+    <p class="title">{{video.title}}</p>
+      <player v-model="state.openPlayer" :video="video"></player>
   </div>
 </template>
 
 <script setup>
+import {defineProps, reactive} from 'vue'
+import Player from "@/components/modal/Player.vue";
+const props = defineProps({
+    video: {
+        type: Object,
+        default: () => {}
+    }
+})
+const state = reactive({
+    openPlayer: false
+})
+const open = () => {
+    state.openPlayer = !state.openPlayer
+}
 </script>
 
 <style lang="scss" scoped>
 .card {
   width: 210px;
   height: 211px;
+    cursor: pointer;
 
   img {
     width: 210px;

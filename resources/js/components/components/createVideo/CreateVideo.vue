@@ -13,12 +13,13 @@
 <script setup>
 import CreateForm from "@/components/components/createVideo/CreateForm.vue";
 import {useCreateVideoState} from "@/store/createVideo.js";
+import {useVideosState} from "@/store/videos.js";
 
 const createVideoStore = useCreateVideoState()
 const add = async (e) => {
     const file = e.target.files[0]
     if (file && file.type === 'video/mp4') {
-        createVideoStore.addVideo(file)
+       await createVideoStore.addVideo(file)
     }
 }
 </script>

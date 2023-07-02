@@ -5,9 +5,12 @@
 </template>
 <script setup>
 import {useUserState} from "@/store/user.js";
+import {useVideosState} from "@/store/videos.js";
 
 const userStore = useUserState()
+const videosStore = useVideosState()
 userStore.getUser()
+videosStore.getAllVideos()
 </script>
 <style lang="scss">
 .app {

@@ -6,7 +6,9 @@
         <div style="width: 50%; margin: 0 auto">
           <div class="wrapper">
             <h1 class="title"><span>Web</span>Dev: Изучение веб-разработки с помощью видеоуроков.</h1>
-            <button class="button">К видео</button>
+              <a href="#list" style="text-decoration: none;">
+                  <button class="button">К видео</button>
+              </a>
           </div>
         </div>
       </v-container>

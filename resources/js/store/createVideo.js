@@ -1,4 +1,5 @@
 import {defineStore} from "pinia";
+import {th} from "vuetify/locale";
 
 export const useCreateVideoState = defineStore('createVideo', {
         state: () => ({
@@ -6,7 +7,8 @@ export const useCreateVideoState = defineStore('createVideo', {
             currentImage: null,
             imageBase64: '',
             title: '',
-            progress: 0
+            progress: 0,
+            statusVideo: 'create'
         }),
         actions: {
             removeVideo() {
@@ -15,6 +17,7 @@ export const useCreateVideoState = defineStore('createVideo', {
                 this.imageBase64 = ''
                 this.title = ''
                 this.progress = 0
+                this.statusVideo = 'create'
             },
             addVideo(video) {
                 this.currentVideo = video
@@ -33,6 +36,7 @@ export const useCreateVideoState = defineStore('createVideo', {
                 this.imageBase64 = ''
             },
             async publishVideo(){
+                this.statusVideo = 'pending'
                 this.progress = 0
                 if(this.currentVideo && this.currentImage && this.title){
                     try {
@@ -41,7 +45,7 @@ export const useCreateVideoState = defineStore('createVideo', {
                         form.append('video',this.currentVideo)
                         form.append('image',this.currentImage)
 
-                        const { data } = await axios.post('api/video',form, {
+                        await axios.post('api/video',form, {
                             headers: {
                                 'Content-Type': 'multipart/form-data'
                             },
@@ -53,8 +57,9 @@ export const useCreateVideoState = defineStore('createVideo', {
                                 console.log(result)
                             }
                         })
-                        console.log(data)
+                        this.statusVideo = 'success'
                     }catch (e){
+                        this.statusVideo = 'create'
                         console.log(e)
                     }
 
