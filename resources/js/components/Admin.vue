@@ -10,6 +10,7 @@
     <v-tabs color="black" v-model="pageStore.tab" bg-color="blue">
       <v-tab value="createVideo">Добавить видео</v-tab>
       <v-tab value="listVideo">Список видео</v-tab>
+      <v-tab value="listUsers">Пользователи</v-tab>
     </v-tabs>
     <v-window v-model="pageStore.tab">
       <v-window-item value="createVideo">
@@ -20,6 +21,9 @@
               <ListAllVideo/>
           </Suspense>
       </v-window-item>
+        <v-window-item value="listUsers">
+            <ListUsers/>
+        </v-window-item>
     </v-window>
   </div>
 </template>
@@ -30,6 +34,7 @@ import {useRouter} from "vue-router";
 import CreateVideo from "@/components/components/createVideo/CreateVideo.vue";
 import ListAllVideo from "@/components/components/listAllVideo/ListAllVideo.vue";
 import {usePageState} from "@/store/page.js";
+import ListUsers from "@/components/components/listUsers/ListUsers.vue";
 const pageStore = usePageState()
 const router = useRouter()
 const toBack = () => {

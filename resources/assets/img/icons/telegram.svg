@@ -1,20 +1,20 @@
-<?xml version="1.0" ?><svg style="enable-background:new 0 0 100 100;" version="1.1" viewBox="0 0 100 100" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style type="text/css">
+<?xml version="1.0" ?><svg style="fill:red; enable-background:new 0 0 100 100;" version="1.1" viewBox="0 0 100 100" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><style type="text/css">
 	.st0{fill:#FFFFFF;}
-	.st1{fill:#F5BB41;}
-	.st2{fill:#2167D1;}
-	.st3{fill:#3D84F3;}
-	.st4{fill:#4CA853;}
-	.st5{fill:#398039;}
-	.st6{fill:#D74F3F;}
-	.st7{fill:#D43C89;}
-	.st8{fill:#B2005F;}
-	.st9{fill:none;stroke:#000000;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
-	
+	.st1{fill: #FFFFFF;}
+	.st2{fill: #FFFFFF;}
+	.st3{fill: #FFFFFF;}
+	.st4{fill: #FFFFFF;}
+	.st5{fill: #FFFFFF;}
+	.st6{fill: #FFFFFF;}
+	.st7{fill: #FFFFFF;}
+	.st8{fill: #FFFFFF;}
+	.st9{fill:#fffffff;stroke:#ffffff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+
 		.st10{fill-rule:evenodd;clip-rule:evenodd;fill:none;stroke:#000000;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
-	
-		.st11{fill-rule:evenodd;clip-rule:evenodd;fill:none;stroke:#040404;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}
+
+		.st11{fill-rule:evenodd;clip-rule:evenodd;fill:none;stroke:#ffffff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10; stroke_color: black}
 	.st12{fill-rule:evenodd;clip-rule:evenodd;}
-	.st13{fill-rule:evenodd;clip-rule:evenodd;fill:#040404;}
+	.st13{fill-rule:evenodd;clip-rule:evenodd;fill:#ffffff;}
 	.st14{fill:url(#SVGID_1_);}
 	.st15{fill:url(#SVGID_2_);}
 	.st16{fill:url(#SVGID_3_);}
@@ -100,14 +100,14 @@
 	.st96{fill:#FE466C;}
 	.st97{fill:#FA4778;}
 	.st98{fill:#FF7700;}
-	.st99{fill-rule:evenodd;clip-rule:evenodd;fill:#1F6BF6;}
+	.st99{fill-rule:evenodd;clip-rule:evenodd;fill:#ffffff;}
 	.st100{fill:#520094;}
 	.st101{fill:#4477E8;}
 	.st102{fill:#3D1D1C;}
 	.st103{fill:#FFE812;}
 	.st104{fill:#344356;}
 	.st105{fill:#00CC76;}
-	.st106{fill-rule:evenodd;clip-rule:evenodd;fill:#345E90;}
+	.st106{fill-rule:evenodd;clip-rule:evenodd;fill:#ffffff;}
 	.st107{fill:#1F65D8;}
 	.st108{fill:#EB3587;}
 	.st109{fill-rule:evenodd;clip-rule:evenodd;fill:#603A88;}

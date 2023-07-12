@@ -3,7 +3,7 @@
     <div class="filter">
       <header-component></header-component>
       <v-container style="margin-top: 80px">
-        <div style="width: 50%; margin: 0 auto">
+        <div>
           <div class="wrapper">
             <h1 class="title"><span>Web</span>Dev: Изучение веб-разработки с помощью видеоуроков.</h1>
               <a href="#list" style="text-decoration: none;">
@@ -40,6 +40,9 @@ import HeaderComponent from './HeaderComponent.vue';
   width: 516px;
   min-height: 220px;
   margin-top: 119px;
+    @media screen and (max-width: 940px ){
+        width: 100%;
+    }
 
   .title {
     width: 100%;
@@ -49,7 +52,12 @@ import HeaderComponent from './HeaderComponent.vue';
     font-size: 40px;
     line-height: 47px;
     color: white;
-
+      @media screen and (max-width: 940px ){
+          font-size: 30px;
+      }
+      @media screen and (max-width: 567px ){
+          font-size: 30px;
+      }
     span {
       color: #0083E2;
     }

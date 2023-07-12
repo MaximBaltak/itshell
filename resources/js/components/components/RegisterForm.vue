@@ -128,6 +128,9 @@ const submit = async () => {
     row-gap: 50px;
     justify-content: center;
     margin: 52px auto;
+    @media screen and (max-width: 471px ){
+        width: 100%;
+    }
 
 }
 
